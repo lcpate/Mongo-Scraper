@@ -4,115 +4,72 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <title>Hello Bulma!</title> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+            crossorigin="anonymous">
 </head>
 
 <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item"> <h2>Mongo Scraper</h2></a>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><strong>Mongo Scraper</strong></a>
+            </div>
     
-            <a class="navbar-item">
-                Home
-            </a>
-
-            <a class="navbar-item">
-                Saved Articles
-            </a>
-
-            <a class="navbar-item">
-                Scrape!
-            </a>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">Saved Articles</a>
+                    </li>
+                    <li>
+                        <a href="#">Scrape!</a>
+                    </li>
+              
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
+        <!-- /.container-fluid -->
     </nav>
 
 
-
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                <abbr title="Position">Pos</abbr>
-            </th>
-            <th>Team</th>
-            <th>
-                <abbr title="Played">Pld</abbr>
-            </th>
-           
-        </tr>
-    </thead>
-    
-    <tbody>
-        <tr>
-            <th>1</th>
-            <td>
-                <a href="https://en.wikipedia.org/wiki/Leicester_City_F.C." title="Leicester City F.C.">Leicester City</a>
-                <strong>(C)</strong>
-            </td>
-            <td>38</td>
-            <td>23</td>
-            <td>12</td>
-            <td>3</td>
-            <td>68</td>
-            <td>36</td>
-            <td>+32</td>
-            <td>81</td>
-            <td>Qualification for the
-                <a href="https://en.wikipedia.org/wiki/2016%E2%80%9317_UEFA_Champions_League#Group_stage"
-                    title="2016–17 UEFA Champions League">Champions League group stage</a>
-            </td>
-        </tr>
-        <tr>
-            <th>2</th>
-            <td>
-                <a href="https://en.wikipedia.org/wiki/Arsenal_F.C." title="Arsenal F.C.">Arsenal</a>
-            </td>
-            <td>38</td>
-            <td>20</td>
-            <td>11</td>
-            <td>7</td>
-            <td>65</td>
-            <td>36</td>
-            <td>+29</td>
-            <td>71</td>
-            <td>Qualification for the
-                <a href="https://en.wikipedia.org/wiki/2016%E2%80%9317_UEFA_Champions_League#Group_stage"
-                    title="2016–17 UEFA Champions League">Champions League group stage</a>
-            </td>
-        </tr>
-      
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <section class="section">
-        <div class="container">
-            <h1 class="title">
-                Hello World
-            </h1>
-            <p class="subtitle">
-                My first website with
-                <strong>Bulma</strong>!
+<div class="container">
+    <div class="jumbotron">
+        <h1>The Washington Post Scraper</h1>
+            <p>
+                <a class="btn btn-primary btn-lg" href="#" role="button">Scrape!</a>
             </p>
-        </div>
-    </section>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-8">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"></h3>
+    </div>
+    <div class="panel-body">
+        <p class="summary"></p>
+        <p class="link"></p>
+    </div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
 </body>
 
 </html>
