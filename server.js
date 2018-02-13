@@ -42,7 +42,7 @@ if (process.env.MONGODB_URI) {
 // A GET request to scrape the echo website
 app.get("/scrape", function (req, res) {
     // First, we grab the body of the html with request
-    request("http://www.echojs.com/", function (error, response, html) {
+    request("http://www.washingtonpost.com/", function (error, response, html) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
         var $ = cheerio.load(html);
         // Now, we grab every h2 within an article tag, and do the following:
