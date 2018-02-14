@@ -5,7 +5,7 @@ var scrapeArticles = function () {
         // For each one
         for (var i = 0; i < data.length; i++) {
             // Display the apropos information on the page
-            $("#articles").append("<div class='col s12 m7'><div class='card horizontal'><div class='card-stacked'><div class='card-content'><p data-id='"
+            $(".panel-body").append("<div class='col s12 m7'><div class='card horizontal'><div class='card-stacked'><div class='card-content'><p data-id='"
                 + data[i]._id
                 + "'>"
                 + data[i].title
@@ -18,7 +18,7 @@ var scrapeArticles = function () {
     });
 }
 
-$("#scrapeNews").on("click", function () {
+$("#scrapeBtn").on("click", function () {
     scrapeArticles();
 });
 
