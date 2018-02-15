@@ -32,7 +32,9 @@ mongoose.Promise = Promise;
 
 
 if (process.env.MONGODB_URI) {
+    console.log("TEST COMMENT");
     mongoose.connect(process.env.MONGODB_URI)
+
 } else {
     mongoose.connect("mongodb://localhost/scraperdb", {
         useMongoClient: true
