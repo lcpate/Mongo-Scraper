@@ -1,8 +1,8 @@
-<div class="container">
-    <div class="jumbotron">
-        <h1>The Washington Post Scraper</h1>
-        <p>
-            <a class="btn btn-primary btn-lg" id="scrapeBtn" href="#" role="button">Scrape!</a>
-        </p>
-    </div>
-</div>
+
+{{#each data}}
+    <h3 data-id='{{id}}'>{{headline}}</h3>
+    {{link}}<br/>
+    {{summary}}<br/>
+    <button data-id='{{_id}}' id='saveArticle'>Save Article</button><br/>
+    <hr/> 
+ {{/each}}

@@ -3,6 +3,9 @@ var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
+var Note = require('./models/comment.js');
+var Article = require('./models/article.js');
+var request = require('request');
 
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
@@ -14,7 +17,8 @@ var cheerio = require("cheerio");
 var db = require("./models");
 
 
-// Initialize Express
+// Initialize Expresscd ..
+
 var app = express();
 
 // Configure middleware
@@ -42,109 +46,126 @@ if (process.env.MONGODB_URI) {
 }
 
 
-// A GET request to scrape the echo website
-app.get("/scrape", function (req, res) {
-    // First, we grab the body of the html with request
-    request("http://www.washingtonpost.com/", function (error, response, html) {
-        // Then, we load that into cheerio and save it to $ for a shorthand selector
-        var $ = cheerio.load(html);
-        // Now, we grab every h2 within an article tag, and do the following:
-        $("article h2").each(function (i, element) {
 
-            // Save an empty result object
+app.get("/", function (req, res) {
+
+    db.Article.find({ isSaved: false })
+        .then(function (dbArticle) {
+            var hbsObject = {
+                articles: dbArticle
+            };
+           
+            res.render("home", hbsObject);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+});
+
+app.get("/saved", function (req, res) {
+
+    db.Article.find({ isSaved: true })
+        .populate("comments")
+        .then(function (dbArticle) {
+            var hbsObject = {
+                articles: dbArticle
+            };
+            // res.json(hbsObject);
+            res.render("saved", hbsObject);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+});
+
+app.get("/articles/:id", function (req, res) {
+
+    db.Article.findOne({ _id: req.params.id })
+        .populate("comments")
+        .then(function (dbArticle) {
+            var hbsObject = {
+                article: dbArticle
+            };
+            res.json(hbsObject);
+            res.render("saved", hbsObject);
+        })
+        .catch(function (err) {
+
+            res.json(err);
+        });
+});
+
+app.post("/save/:id", function (req, res) {
+    db.Article.update({ _id: req.params.id }, { isSaved: true })
+        .then(function (dbArticle) {
+
+            res.redirect("/");
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+});
+
+app.post("/delete/:id", function (req, res) {
+    db.Article.update({ _id: req.params.id }, { isSaved: false })
+        .then(function (dbArticle) {
+
+            res.redirect("/saved");
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+});
+
+app.post("/articles/:id", function (req, res) {
+
+    db.Comment.create(req.body)
+        .then(function (dbComment) {
+
+            return db.Article.findOneAndUpdate({ _id: req.params.id }, { comments: dbComment._id }, { new: true });
+        })
+        .then(function (dbArticle) {
+
+            res.json(dbArticle);
+        })
+        .catch(function (err) {
+
+            res.json(err);
+        });
+});
+
+
+app.get("/scrape", function (req, res) {
+
+    request("https://www.washingtonpost.com", function (error, response, html) {
+
+        var $ = cheerio.load(html);
+
+        $("div.contentItem__contentWrapper").each(function (i, element) {
+
             var result = {};
 
-            // Add the text and href of every link, and save them as properties of the result object
-            result.title = $(this).children("a").text();
-            result.link = $(this).children("a").attr("href");
-
-            // Using our Article model, create a new entry
-            // This effectively passes the result object to the entry (and the title and link)
-            var entry = new Article(result);
-
-            // Now, save that entry to the db
-            entry.save(function (err, doc) {
-                // Log any errors
-                if (err) {
-                    console.log(err);
-                }
-                // Or log the doc
-                else {
-                    console.log(doc);
-                }
-            });
-
-        });
-    });
-    // Tell the browser that we finished scraping the text
-    res.send("Scrape Complete");
-});
+            result.headline = $(element).children("h1").text();
+            result.summary = $(element).children("p").text();
+            result.link = "www.washingtonpost.com" + $(element).parent("a").attr("href");
 
 
-// This will get the articles we scraped from the mongoDB
-app.get("/articles", function (req, res) {
-    // Grab every doc in the Articles array
-    Article.find({}, function (error, doc) {
-        // Log any errors
-        if (error) {
-            console.log(error);
-        }
-        // Or send the doc to the browser as a json object
-        else {
-            res.json(doc);
-        }
-    });
-});
+            if (result.link && result.headline && result.summary) {
 
-// Grab an article by it's ObjectId
-app.get("/articles/:id", function (req, res) {
-    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-    Article.findOne({ "_id": req.params.id })
-        // ..and populate all of the notes associated with it
-        .populate("note")
-        // now, execute our query
-        .exec(function (error, doc) {
-            // Log any errors
-            if (error) {
-                console.log(error);
-            }
-            // Otherwise, send the doc to the browser as a json object
-            else {
-                res.json(doc);
+                db.Article.create(result)
+                    .then(function (dbArticle) {
+                        console.log(dbArticle);
+                    })
+                    .catch(function (err) {
+                        return res.json(err);
+                    });
             }
         });
-});
 
-
-// Create a new Comment or replace an existing Comment
-app.post("/articles/:id", function (req, res) {
-    // Create a new Comment and pass the req.body to the entry
-    var newComment = new Comment(req.body);
-
-    // And save the new Comment the db
-    newComment.save(function (error, doc) {
-        // Log any errors
-        if (error) {
-            console.log(error);
-        }
-        // Otherwise
-        else {
-            // Use the article id to find and update it's Comment
-            Article.findOneAndUpdate({ "_id": req.params.id }, { "comment": doc._id })
-                // Execute the above query
-                .exec(function (err, doc) {
-                    // Log any errors
-                    if (err) {
-                        console.log(err);
-                    }
-                    else {
-                        // Or send the document to the browser
-                        res.send(doc);
-                    }
-                });
-        }
+        res.redirect("/");
     });
 });
+
 
 var PORT = process.env.PORT || 3000;
 // Listen on port 3000

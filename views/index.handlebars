@@ -1,4 +1,4 @@
-<div class="row">
+{{!-- <div class="row">
     <div class="col-md-8">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -10,4 +10,14 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
+
+
+<hr/> {{#each data}}
+<h3 data-id='{{id}}'>{{headline}}</h3>
+{{link}}
+<br/> {{summary}}
+<br/>
+<button data-id='{{_id}}' id='saveArticle'>Save Article</button>
+<br/>
+<hr/> {{/each}}
