@@ -3,7 +3,7 @@ var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
-var Note = require('./models/comment.js');
+var Comment = require('./models/comment.js');
 var Article = require('./models/article.js');
 var request = require('request');
 
