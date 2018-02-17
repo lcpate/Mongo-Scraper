@@ -7,7 +7,7 @@ var Note = require('./models/comment.js');
 var Article = require('./models/article.js');
 var request = require('request');
 
-// Our scraping tools
+// Our scraping tools 
 // Axios is a promised-based http library, similar to jQuery's Ajax method
 // It works on the client and on the server
 var axios = require("axios");
